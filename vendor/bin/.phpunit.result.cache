@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"Tests\\ArrayCacheTest::testSetAndGet":0.004,"Tests\\ArrayCacheTest::testGetDefault":0,"Tests\\ArrayCacheTest::testDelete":0,"Tests\\ArrayCacheTest::testClear":0,"Tests\\ArrayCacheTest::testMultiple":0}}

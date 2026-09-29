@@ -1,0 +1,62 @@
+{
+    "name": "cache/integration-tests",
+    "description": "Integration tests for PSR-6 and PSR-16 cache implementations",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "cache",
+        "psr6",
+        "psr16",
+        "test"
+    ],
+    "authors": [
+        {
+            "name": "Aaron Scherer",
+            "email": "aequasi@gmail.com",
+            "homepage": "https://github.com/aequasi"
+        },
+        {
+            "name": "Tobias Nyholm",
+            "email": "tobias.nyholm@gmail.com",
+            "homepage": "https://github.com/nyholm"
+        }
+    ],
+    "homepage": "https://github.com/php-cache/integration-tests",
+    "require": {
+        "php": "^8.2",
+        "cache/tag-interop": "^2.0",
+        "psr/cache": "^3.0",
+        "psr/simple-cache": "^2.0 || ^3.0"
+    },
+    "require-dev": {
+        "php-cs-fixer/shim": "3.95.19",
+        "phpstan/phpstan": "2.2.8",
+        "phpunit/phpunit": "^11.5 || ^12.0",
+        "symfony/cache": "^7.4 || ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cache\\IntegrationTests\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cache\\IntegrationTests\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "scripts": {
+        "analyse": "phpstan analyse --configuration=phpstan.neon --debug --no-progress --memory-limit=1G",
+        "coverage": [
+            "@php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover build/coverage.xml",
+            "@php tools/check-coverage.php build/coverage.xml 90"
+        ],
+        "cs-check": "php-cs-fixer fix --dry-run --diff --sequential",
+        "cs-fix": "php-cs-fixer fix --sequential",
+        "test": "phpunit"
+    }
+}

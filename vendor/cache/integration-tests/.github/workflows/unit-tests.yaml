@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }}, PSR-16 ${{ matrix.psr_simple_cache }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.2'
+            psr_simple_cache: '2.0.0'
+          - php: '8.2'
+            psr_simple_cache: '3.0.0'
+          - php: '8.3'
+            psr_simple_cache: '3.0.0'
+          - php: '8.4'
+            psr_simple_cache: '3.0.0'
+          - php: '8.5'
+            psr_simple_cache: '3.0.0'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@2.37.2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - run: composer update --with "psr/simple-cache:${{ matrix.psr_simple_cache }}" --no-interaction --prefer-dist --no-progress
+      - run: composer test
+
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@2.37.2
+        with:
+          php-version: '8.2'
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: composer validate --strict
+      - run: composer analyse
+      - run: composer cs-check
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@2.37.2
+        with:
+          php-version: '8.5'
+          coverage: xdebug
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: composer coverage
